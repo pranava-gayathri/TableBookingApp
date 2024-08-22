@@ -118,10 +118,14 @@ public class RestaurantService {
         }
     }
 
-    public List<Tables> getTablesByRestaurantId(long id){
+    public List<TableDTO> getTablesByRestaurantId(long id){
         Restaurant restaurant=repo.findById(id).orElseThrow();
+        List<TableDTO> tableDTOList=new ArrayList<>();
+        List<Tables> tables=restaurant.getTables();
+        tableDTOList(tables, tableDTOList);
 
-        return  restaurant.getTables();
+
+        return  tableDTOList;
 
     }
 

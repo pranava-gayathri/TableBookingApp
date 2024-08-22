@@ -1,6 +1,7 @@
 package com.pranavagayathri.TableBookingApp.controller;
 
 import com.pranavagayathri.TableBookingApp.dto.RestaurantDTO;
+import com.pranavagayathri.TableBookingApp.dto.TableDTO;
 import com.pranavagayathri.TableBookingApp.exceptions.RestaurantNotFoundException;
 import com.pranavagayathri.TableBookingApp.model.Restaurant;
 import com.pranavagayathri.TableBookingApp.service.RestaurantService;
@@ -24,6 +25,11 @@ public class RestaurantController {
     @RequestMapping("/getrestaurantbyid/{id}")
     public RestaurantDTO getRestaurantById(@PathVariable long id) throws RestaurantNotFoundException {
         return service.getRestaurantById(id);
+    }
+
+    @RequestMapping("/tables/{restaurantId}")
+    public List<TableDTO> getTablesByRestaurantId(@PathVariable long restaurantId){
+        return service.getTablesByRestaurantId(restaurantId);
     }
 
     @PostMapping("/addrestaurant")
