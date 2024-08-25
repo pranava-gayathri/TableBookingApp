@@ -6,16 +6,18 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class ReservationDTO {
+public class ReservationRequestDTO {
+
     private long reservationId;
-    private LocalTime time;
+    private long userId;
     private LocalDate date;
-    private UserDTO userDTO;
+    private LocalTime time;
     private long restaurantId;
-    private String restaurantName;
-    private long tableId;
-    private long tableNumber;
+    private int tableId;
+    private int partySize;
+
+
 }

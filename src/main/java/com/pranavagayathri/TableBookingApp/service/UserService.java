@@ -2,6 +2,7 @@ package com.pranavagayathri.TableBookingApp.service;
 
 import com.pranavagayathri.TableBookingApp.dto.UserDTO;
 import com.pranavagayathri.TableBookingApp.exceptions.UserNotFoundException;
+import com.pranavagayathri.TableBookingApp.helpermethods.EntityToDTO;
 import com.pranavagayathri.TableBookingApp.model.User;
 import com.pranavagayathri.TableBookingApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,51 +14,62 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserServiceInterface {
     @Autowired
     private UserRepository repo;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    public List<UserDTO> getAllUsers() {
+    @Autowired
+    private EntityToDTO entityToDTO;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+    @Override
+    public List<UserDTO> getAllUsers() throws UserNotFoundException {
+
         List<User> userList=repo.findAll();
+        if (!userList.isEmpty()){
         List<UserDTO> userDTOS=new ArrayList<>();
         for(User u:userList){
-            UserDTO udto=new UserDTO();
-            udto.setUserId(u.getUserId());
-            udto.setUserName(u.getUserName());
-            udto.setPhone(u.getPhone());
-
+            UserDTO udto=entityToDTO.userToUserDTO(u);
             userDTOS.add(udto);
-
         }
-
         return userDTOS;
-    }
-    public UserDTO getUserById(Long id) throws UserNotFoundException {
-
-        Optional<User> usr=repo.findById(id);
-        if(!usr.isPresent()){
-            throw new UserNotFoundException("user not found");
         }
         else{
-            User user=repo.findById(id).get();
-            UserDTO userDTO=new UserDTO();
-        userDTO.setUserName(user.getUserName());
-        userDTO.setPhone(user.getPhone());
-        userDTO.setUserId(user.getUserId());
-        return userDTO;}
-
+            throw new UserNotFoundException("error in getting all errors");
+        }
     }
 
-    public String addUser(User user) {
-        try{
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            repo.save(user);
-            return "register successfully";
-        } catch (Exception e) {
+    @Override
+    public UserDTO getUserById(Long id) throws UserNotFoundException {
+        User usr=repo.findById(id).orElse(null);
+        if(usr!=null){
 
+            return entityToDTO.userToUserDTO(usr);
+        }
+        else{
+            throw new UserNotFoundException("user not found");
+        }
+    }
+
+
+
+
+    @Override
+    public String addUser(User user) {
+        try {
+            if(bCryptPasswordEncoder.encode(user.getPassword())!=null) {
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+                repo.save(user);
+                return "registration Successful";
+            }
+            else{
+                throw new RuntimeException();
+            }
+        } catch (RuntimeException e) {
+            // Handle the exception here, such as logging or returning a custom message
             return e.getMessage();
         }
-
     }
+
 }

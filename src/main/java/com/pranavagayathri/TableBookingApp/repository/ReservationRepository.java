@@ -16,8 +16,10 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
 //                            @Param("date") LocalDate date,
 //                            @Param("time") LocalTime time);
 
-    @Query("SELECT COUNT(r) > 0 FROM Reservation r WHERE r.tables.tableId = :tableId AND r.date = :date AND r.time = :time")
-    boolean isTableReserved(@Param("tableId") Integer tableId,
+    @Query("SELECT COUNT(r) > 0 FROM Reservation r WHERE r.restaurant.restaurantId=:restaurantId AND r.tables.tableId = :tableId AND r.date = :date AND r.time = :time")
+    boolean isTableReserved(
+            @Param("restaurantId") Long restaurantId,
+            @Param("tableId") Integer tableId,
                             @Param("date") LocalDate date,
                             @Param("time") LocalTime time);
 }

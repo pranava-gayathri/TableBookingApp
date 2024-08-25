@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RatingAndReviewService {
+public class RatingAndReviewService implements RatingAndReviewServiceInterface {
     @Autowired
     private RatingAndReviewsRepository repo;
     public List<RatingAndReviewsDTO> getAllRatingAndReviews(){

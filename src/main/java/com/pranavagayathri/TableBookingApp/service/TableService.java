@@ -7,22 +7,25 @@ import com.pranavagayathri.TableBookingApp.repository.RestaurantRepo;
 import com.pranavagayathri.TableBookingApp.repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TableService {
+public class TableService implements TableServiceInterface {
 
     @Autowired
     private TableRepository repo;
     @Autowired
     private RestaurantRepo restaurantRepo;
+
+
+    @Override
     public String addTable(Tables table) {
         List<Restaurant> restaurants=restaurantRepo.findAll();
         long id=table.getRestaurant().getRestaurantId();
-        Restaurant res=restaurantRepo.findById(id).orElse(new Restaurant());
+        Restaurant res=restaurantRepo.findById(id).orElse(null);
         if(restaurants.contains(res)){
             repo.save(table);
             return "Table added successfully";
@@ -34,6 +37,8 @@ public class TableService {
 
     }
 
+
+    @Override
     public List<TableDTO> getAllTables() {
         List<Tables> tables=repo.findAll();
         List<TableDTO> tableDTOList=new ArrayList<>();

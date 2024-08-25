@@ -35,4 +35,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
 
+    @ExceptionHandler(CannotAddRestaurantException.class)
+    public  ResponseEntity<ErrorMessage> CannotAddRestaurantException(CannotAddRestaurantException e){
+        ErrorMessage message=new ErrorMessage(HttpStatus.FORBIDDEN,e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(message);
+    }
+
 }
