@@ -2,7 +2,7 @@ package com.pranavagayathri.TableBookingApp.controller;
 
 import com.pranavagayathri.TableBookingApp.dto.RatingAndReviewsDTO;
 import com.pranavagayathri.TableBookingApp.model.RatingsAndReviews;
-import com.pranavagayathri.TableBookingApp.service.RatingAndReviewService;
+import com.pranavagayathri.TableBookingApp.service.RatingAndReviewServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 public class RatingAndReviewsController {
     @Autowired
-    private RatingAndReviewService service;
+    private RatingAndReviewServiceInterface service;
 
     @GetMapping("/ratingandreviews")
     public List<RatingAndReviewsDTO> getAllRatingAndReviews(){
